@@ -1,31 +1,59 @@
-# Welcome to your new OSS project
+Legion::Cache
+=====
 
-This project currently has the base documentation files required.  Replace this
-file with your own README.md.
+Legion::Cache is a wrapper class to handle requests to the caching tier. It supports both memcached and redis
 
-## Files included
+Supported Ruby versions and implementations
+------------------------------------------------
 
-**CODE_OF_CONDUCT.md**
+Legion::Json should work identically on:
 
-Use without changes
+* JRuby 9.2+
+* Ruby 2.4+
 
-**INDIVIDUAL_CONTRIBUTOR_LICENSE.md**
 
-Use without changes
+Installation and Usage
+------------------------
 
-**CONTRIBUTING.md**
+You can verify your installation using this piece of code:
 
-This file has some portions that are required and others that can be customized.
-Customize the Coding Standards section to mention the languages used by your project.
-Feel free to add any rules and requirements that you would like people to follow
-when contributing to your project.
+```bash
+gem install legion-cache
+```
 
-**NOTICE.txt**
+```ruby
+require 'legion/cache'
 
-This file is needed if your project is licensed under the Apache 2.0 license.  
-If you are using this license, fill it out according to the prompts.  Otherwise,
-delete this file.
+Legion::Cache.setup
+Legion::Cache.connected? # => true
+Legion::Cache.set('foobar', 'testing', ttl: 10)
+Legion::Cache.get('foobar') # => 'testing'
+sleep(11)
+Legion::Cache.get('foobar') # => nil
 
-## Additional Repo Updates
+```
 
-Make sure that you have a project description and appropriate repository topics.
+Settings
+----------
+
+```json
+{
+  "driver": "dalli",
+  "servers": [
+    "127.0.0.1:11211"
+  ],
+  "connected": false,
+  "enabled": true,
+  "namespace": "legion",
+  "compress": false,
+  "cache_nils": false,
+  "pool_size": 10,
+  "timeout": 10,
+  "expires_in": 0
+}
+```
+
+Authors
+----------
+
+* [Matthew Iverson](https://github.com/Esity) - current maintainer
